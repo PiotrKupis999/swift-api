@@ -31,10 +31,13 @@ public class SwiftApiController {
         try {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             List<CsvBean> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
                     .withType(CsvBean.class).build().parse();
             //readCsvDataService.addAllBeansToRepository(csvData);
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             List<SwiftCode> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
@@ -45,6 +48,9 @@ public class SwiftApiController {
             readCsvDataService.readAllBeansToDatabase(csvData);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -57,6 +63,11 @@ public class SwiftApiController {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 =======
 
 
