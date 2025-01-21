@@ -3,6 +3,8 @@ package com.recrutTask.swift_api.controllers;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.recrutTask.swift_api.dto.CsvBean;
+import com.recrutTask.swift_api.models.SwiftCode;
+import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
 import com.recrutTask.swift_api.services.ReadCsvDataService;
 import com.recrutTask.swift_api.services.SwiftApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +27,12 @@ public class SwiftApiController {
 
     @Autowired
     private ReadCsvDataService readCsvDataService;
+    @Autowired
+    private SwiftCodeRepository swiftCodeRepository;
 
     @GetMapping("/import-csv")
     public ResponseEntity<List<SwiftCode>> importCsv(@RequestParam String pathFile) {
         try {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            List<CsvBean> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
-                    .withType(CsvBean.class).build().parse();
-            //readCsvDataService.addAllBeansToRepository(csvData);
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             List<SwiftCode> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
                     .withType(SwiftCode.class)
                     .build()
@@ -47,13 +40,6 @@ public class SwiftApiController {
 
             readCsvDataService.readAllBeansToDatabase(csvData);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             return ResponseEntity.ok(csvData);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
@@ -61,19 +47,6 @@ public class SwiftApiController {
     }
 
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
-=======
-
-
->>>>>>> Stashed changes
-=======
-
-
->>>>>>> Stashed changes
 }

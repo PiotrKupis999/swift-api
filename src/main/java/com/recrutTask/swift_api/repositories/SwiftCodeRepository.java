@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface SwiftCodeRepository extends JpaRepository<SwiftCode, String> {
-    List<SwiftCode> findByParentSwiftCode(SwiftCode parentSwiftCode);
+    //List<SwiftCode> findByParentSwiftCode(SwiftCode parentSwiftCode);
 }

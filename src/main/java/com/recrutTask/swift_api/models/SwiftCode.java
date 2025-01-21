@@ -29,35 +29,13 @@ public class SwiftCode {
 
     private boolean isHeadquarter;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 /*
     @OneToMany(mappedBy = "swiftCode", cascade = CascadeType.ALL, orphanRemoval = true)
->>>>>>> Stashed changes
     private List<SwiftCode> branches;
 
     @ManyToOne
     private SwiftCode parent;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    public SwiftCode(String swiftCode, String address, String bankName, String countryName, String countryISO2) {
-        this.swiftCode = swiftCode;
-        this.address = address;
-        this.bankName = bankName;
-        this.countryName = countryName;
-        this.countryISO2 = countryISO2;
-    }
-
-=======
  */
     public SwiftCode(){};
 
@@ -66,28 +44,20 @@ public class SwiftCode {
         return swiftCode;
     }
 
-=======
- */
-    public SwiftCode(){};
-
-
-    public String getSwiftCode() {
-        return swiftCode;
-    }
-
->>>>>>> Stashed changes
-=======
- */
-    public SwiftCode(){};
-
-
-    public String getSwiftCode() {
-        return swiftCode;
-    }
-
->>>>>>> Stashed changes
     public String getAddress() {
         return address;
+    }
+
+    public String getCountryISO2() {
+        return countryISO2;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getCountryName() {
+        return countryName;
     }
 
     public void setAddress(String address) {
@@ -98,6 +68,21 @@ public class SwiftCode {
         isHeadquarter = headquarter;
     }
 
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public void setCountryISO2(String countryISO2) {
+        this.countryISO2 = countryISO2;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public void setSwiftCode(String swiftCode) {
+        this.swiftCode = swiftCode;
+    }
 
     @Override
     public String toString() {
@@ -110,6 +95,5 @@ public class SwiftCode {
                 ", swiftCode='" + swiftCode + '\'' +
                 '}';
     }
->>>>>>> Stashed changes
 }
 

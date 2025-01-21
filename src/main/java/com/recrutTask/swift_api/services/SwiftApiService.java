@@ -16,7 +16,7 @@ public class SwiftApiService {
 
 
 
-
+/*
     public SwiftCode saveSwiftCode(SwiftCode swiftCode) {
         return repository.save(swiftCode);
     }
@@ -24,5 +24,7 @@ public class SwiftApiService {
     public void deleteSwiftCode(String swiftCode) {
         repository.deleteById(swiftCode);
     }
+
+ */
 
 }
