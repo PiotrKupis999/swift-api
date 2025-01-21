@@ -2,20 +2,15 @@ package com.recrutTask.swift_api.controllers;
 
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.recrutTask.swift_api.dto.CsvBean;
-import com.recrutTask.swift_api.models.SwiftCode;
+import com.recrutTask.swift_api.models.BankEntity;
 import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
-import com.recrutTask.swift_api.services.ReadCsvDataService;
+import com.recrutTask.swift_api.services.DataService;
 import com.recrutTask.swift_api.services.SwiftApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.FileReader;
-import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -26,19 +21,19 @@ public class SwiftApiController {
     private SwiftApiService swiftApiService;
 
     @Autowired
-    private ReadCsvDataService readCsvDataService;
+    private DataService dataService;
     @Autowired
     private SwiftCodeRepository swiftCodeRepository;
 
     @GetMapping("/import-csv")
-    public ResponseEntity<List<SwiftCode>> importCsv(@RequestParam String pathFile) {
+    public ResponseEntity<List<BankEntity>> importCsv(@RequestParam String pathFile) {
         try {
-            List<SwiftCode> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
-                    .withType(SwiftCode.class)
+            List<BankEntity> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
+                    .withType(BankEntity.class)
                     .build()
                     .parse();
 
-            readCsvDataService.readAllBeansToDatabase(csvData);
+            dataService.readAllBeansToDatabase(csvData);
 
             return ResponseEntity.ok(csvData);
         } catch (Exception e) {
@@ -46,7 +41,18 @@ public class SwiftApiController {
         }
     }
 
+    @GetMapping("/{swift-code}")
+    public ResponseEntity<BankEntity> getDetails(@PathVariable("swift-code") String swiftCode) {
+        try {
+            System.out.println(swiftCode);
 
+
+
+            return ResponseEntity.ok(swiftCodeRepository.findById(swiftCode).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 
 
 }

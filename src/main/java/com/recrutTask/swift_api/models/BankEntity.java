@@ -3,17 +3,12 @@ package com.recrutTask.swift_api.models;
 
 import com.opencsv.bean.CsvBindByName;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
 @Entity
-public class SwiftCode {
+public class BankEntity {
 
-    @Id
-    @CsvBindByName(column = "SWIFT CODE")
-    private String swiftCode;
+
 
     @CsvBindByName(column = "ADDRESS")
     private String address;
@@ -29,16 +24,21 @@ public class SwiftCode {
 
     private boolean isHeadquarter;
 
-/*
+    @Id
+    @CsvBindByName(column = "SWIFT CODE")
+    private String swiftCode;
+
+
     @OneToMany(mappedBy = "swiftCode", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SwiftCode> branches;
-
+    private List<BankEntity> branches;
+/*
     @ManyToOne
-    private SwiftCode parent;
+    private BankEntity parent;
+*/
 
- */
-    public SwiftCode(){};
+    public BankEntity(){};
 
+    public BankEntity(String swiftCode,String address, String bankName ,String countryISO2,String countryName,boolean isHeadquarter){};
 
     public String getSwiftCode() {
         return swiftCode;
@@ -58,6 +58,10 @@ public class SwiftCode {
 
     public String getCountryName() {
         return countryName;
+    }
+
+    public boolean getHeadquarter() {
+        return isHeadquarter;
     }
 
     public void setAddress(String address) {
@@ -82,6 +86,14 @@ public class SwiftCode {
 
     public void setSwiftCode(String swiftCode) {
         this.swiftCode = swiftCode;
+    }
+
+    public List<BankEntity> getBranches() {
+        return branches;
+    }
+
+    public void setBranches(List<BankEntity> branches) {
+        this.branches = branches;
     }
 
     @Override
