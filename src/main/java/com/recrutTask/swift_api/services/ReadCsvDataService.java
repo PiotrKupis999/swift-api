@@ -19,6 +19,7 @@ public class ReadCsvDataService {
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public void addAllBeansToRepository(List<CsvBean> beans){
         System.out.println("halo1");
 
@@ -26,6 +27,8 @@ public class ReadCsvDataService {
             System.out.println("halo");
             SwiftCode swiftCode = csvBeanSwiftService.csvBeanToSwiftCode(bean);
 =======
+=======
+>>>>>>> Stashed changes
     public void readAllBeansToDatabase(List<SwiftCode> swiftCodes){
         for (SwiftCode swiftCode : swiftCodes){
 
@@ -33,6 +36,9 @@ public class ReadCsvDataService {
 
             trimWhiteSpacesInAddress(swiftCode);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             swiftCodeRepository.save(swiftCode);
         }

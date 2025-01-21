@@ -30,8 +30,11 @@ public class SwiftCode {
     private boolean isHeadquarter;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
 =======
+=======
+>>>>>>> Stashed changes
 /*
     @OneToMany(mappedBy = "swiftCode", cascade = CascadeType.ALL, orphanRemoval = true)
 >>>>>>> Stashed changes
@@ -40,6 +43,7 @@ public class SwiftCode {
     @ManyToOne
     private SwiftCode parent;
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     public SwiftCode(String swiftCode, String address, String bankName, String countryName, String countryISO2) {
         this.swiftCode = swiftCode;
@@ -58,6 +62,16 @@ public class SwiftCode {
         return swiftCode;
     }
 
+=======
+ */
+    public SwiftCode(){};
+
+
+    public String getSwiftCode() {
+        return swiftCode;
+    }
+
+>>>>>>> Stashed changes
     public String getAddress() {
         return address;
     }

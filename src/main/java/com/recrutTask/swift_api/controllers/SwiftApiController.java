@@ -30,10 +30,13 @@ public class SwiftApiController {
     public ResponseEntity<List<SwiftCode>> importCsv(@RequestParam String pathFile) {
         try {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             List<CsvBean> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
                     .withType(CsvBean.class).build().parse();
             //readCsvDataService.addAllBeansToRepository(csvData);
 =======
+=======
+>>>>>>> Stashed changes
             List<SwiftCode> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
                     .withType(SwiftCode.class)
                     .build()
@@ -41,6 +44,9 @@ public class SwiftApiController {
 
             readCsvDataService.readAllBeansToDatabase(csvData);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             return ResponseEntity.ok(csvData);
         } catch (Exception e) {
@@ -50,6 +56,11 @@ public class SwiftApiController {
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 =======
 
 

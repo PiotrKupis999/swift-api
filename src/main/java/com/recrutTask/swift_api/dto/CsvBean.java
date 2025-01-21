@@ -50,5 +50,8 @@ public class CsvBean {
     }
     */
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
