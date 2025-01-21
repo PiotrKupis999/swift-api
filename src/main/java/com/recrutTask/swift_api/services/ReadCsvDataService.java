@@ -17,28 +17,43 @@ public class ReadCsvDataService {
     @Autowired
     SwiftCodeRepository swiftCodeRepository;
 
-    @Autowired
-    CsvBeanSwiftService csvBeanSwiftService;
 
+<<<<<<< Updated upstream
     public void addAllBeansToRepository(List<CsvBean> beans){
         System.out.println("halo1");
 
         for (CsvBean bean : beans){
             System.out.println("halo");
             SwiftCode swiftCode = csvBeanSwiftService.csvBeanToSwiftCode(bean);
+=======
+    public void readAllBeansToDatabase(List<SwiftCode> swiftCodes){
+        for (SwiftCode swiftCode : swiftCodes){
+
+            swiftCode.setHeadquarter(calculateIsHeadquarter(swiftCode.getSwiftCode()));
+
+            trimWhiteSpacesInAddress(swiftCode);
+
+>>>>>>> Stashed changes
             swiftCodeRepository.save(swiftCode);
         }
     }
 
-    public List<CsvBean> parseCsv(Path filePath) throws Exception {
-        try (Reader reader = new FileReader(filePath.toFile())) {
-            CsvToBean<CsvBean> csvToBean = new CsvToBeanBuilder<CsvBean>(reader)
-                    .withType(CsvBean.class)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build();
 
-            return csvToBean.parse();
+    public boolean calculateIsHeadquarter(String swiftCode) {
+
+        if (swiftCode != null && swiftCode.length() >= 3) {
+            String suffix = swiftCode.substring(swiftCode.length() - 3);
+            return "XXX".equals(suffix);
+
         }
+        return false;
     }
+
+    public void trimWhiteSpacesInAddress(SwiftCode swiftCode){
+
+        swiftCode.setAddress(swiftCode.getAddress().trim());
+
+    }
+
 
 }

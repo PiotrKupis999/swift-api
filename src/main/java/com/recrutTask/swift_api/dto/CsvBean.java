@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CsvBean {
-
+/*
     @CsvBindByName(column = "ADDRESS")
     private String address;
 
@@ -31,4 +31,24 @@ public class CsvBean {
 
 
 
+<<<<<<< Updated upstream
+=======
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getCountryISO2() {
+        return countryISO2;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public String getSwiftCode() {
+        return swiftCode;
+    }
+    */
+
+>>>>>>> Stashed changes
 }
