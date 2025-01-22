@@ -1,13 +1,21 @@
 package com.recrutTask.swift_api.repositories;
 
-import com.recrutTask.swift_api.SwiftApiApplication;
-import com.recrutTask.swift_api.models.SwiftCode;
+import com.recrutTask.swift_api.models.BankEntity;
+import com.recrutTask.swift_api.services.DataService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import javax.xml.crypto.Data;
 
 @Repository
-public interface SwiftCodeRepository extends JpaRepository<SwiftCode, String> {
-    List<SwiftCode> findByParentSwiftCode(SwiftCode parentSwiftCode);
+public interface SwiftCodeRepository extends JpaRepository<BankEntity, String> {
+
+
+
+    //List<BankEntity> findByParentSwiftCode(BankEntity parentSwiftCode);
+
+
+
+
+
 }
