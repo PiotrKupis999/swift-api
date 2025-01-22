@@ -28,9 +28,11 @@ public class BankEntity {
     @CsvBindByName(column = "SWIFT CODE")
     private String swiftCode;
 
-
+/*
     @OneToMany(mappedBy = "swiftCode", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankEntity> branches;
+*/
+
 /*
     @ManyToOne
     private BankEntity parent;
@@ -38,7 +40,17 @@ public class BankEntity {
 
     public BankEntity(){};
 
-    public BankEntity(String swiftCode,String address, String bankName ,String countryISO2,String countryName,boolean isHeadquarter){};
+
+    public BankEntity(String address, String bankName, String countryISO2, String countryName, boolean isHeadquarter, String swiftCode) {
+        this.address = address;
+        this.bankName = bankName;
+        this.countryISO2 = countryISO2;
+        this.countryName = countryName;
+        this.isHeadquarter = isHeadquarter;
+        this.swiftCode = swiftCode;
+    }
+
+
 
     public String getSwiftCode() {
         return swiftCode;
@@ -87,7 +99,7 @@ public class BankEntity {
     public void setSwiftCode(String swiftCode) {
         this.swiftCode = swiftCode;
     }
-
+/*
     public List<BankEntity> getBranches() {
         return branches;
     }
@@ -95,6 +107,8 @@ public class BankEntity {
     public void setBranches(List<BankEntity> branches) {
         this.branches = branches;
     }
+
+*/
 
     @Override
     public String toString() {

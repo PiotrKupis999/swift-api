@@ -5,11 +5,12 @@ import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class DataService {
     @Autowired
-    SwiftCodeRepository swiftCodeRepository;
+    SwiftCodeRepository repository;
 
     @Autowired
     SwiftApiService swiftApiService;
@@ -29,7 +30,7 @@ public class DataService {
 
 
 
-            swiftCodeRepository.save(bankEntity);
+            repository.save(bankEntity);
 
 
             System.out.println(bankEntity.toString());
@@ -50,6 +51,23 @@ public class DataService {
 
         }
         return false;
+    }
+
+    public List<BankEntity> findAllBranches (String swiftCode){
+
+        List<BankEntity> branches = new ArrayList<>();
+
+        String mainSwiftCodeOfHQ = swiftCode.substring(0, 8);
+
+        for (BankEntity bank : repository.findAll()){
+            if(bank.getSwiftCode().substring(0, 8).contains(mainSwiftCodeOfHQ) && !calculateIsHeadquarter(bank.getSwiftCode())){
+
+                branches.add(bank);
+            }
+        }
+
+        return branches;
+
     }
 
 

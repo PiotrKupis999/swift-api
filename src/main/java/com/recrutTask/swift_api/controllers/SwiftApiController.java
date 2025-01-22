@@ -3,6 +3,7 @@ package com.recrutTask.swift_api.controllers;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.recrutTask.swift_api.models.BankEntity;
+import com.recrutTask.swift_api.models.Headquarter;
 import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
 import com.recrutTask.swift_api.services.DataService;
 import com.recrutTask.swift_api.services.SwiftApiService;
@@ -12,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileReader;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/v1/swift-codes")
 public class SwiftApiController {
 
-    @Autowired
-    private SwiftApiService swiftApiService;
+
 
     @Autowired
     private DataService dataService;
     @Autowired
-    private SwiftCodeRepository swiftCodeRepository;
+    private SwiftCodeRepository repository;
 
     @GetMapping("/import-csv")
     public ResponseEntity<List<BankEntity>> importCsv(@RequestParam String pathFile) {
@@ -43,12 +44,16 @@ public class SwiftApiController {
 
     @GetMapping("/{swift-code}")
     public ResponseEntity<BankEntity> getDetails(@PathVariable("swift-code") String swiftCode) {
+        swiftCode = swiftCode.toUpperCase();
         try {
-            System.out.println(swiftCode);
+            BankEntity be1 = repository.findById(swiftCode).orElseThrow(() -> new RuntimeException("BankEntity not found"));
 
+            if (dataService.calculateIsHeadquarter(swiftCode)) {
+                Headquarter h1 = new Headquarter(dataService, be1);
+                return ResponseEntity.ok(h1);
+            }
 
-
-            return ResponseEntity.ok(swiftCodeRepository.findById(swiftCode).get());
+            return ResponseEntity.ok(be1);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
