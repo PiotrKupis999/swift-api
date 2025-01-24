@@ -4,9 +4,12 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.recrutTask.swift_api.models.BankEntity;
 import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,23 +20,45 @@ public class DataService {
     SwiftCodeRepository repository;
 
 
-    public void readAllBeansToDatabase(List<BankEntity> bankEntities){
-        for (BankEntity bankEntity : bankEntities){
+    public List<BankEntity> uploadDatabaseFromLocalFile(){
+        List<BankEntity> listOfBankEntities = allBankEntitiesFromCsvToList
+                ("src/main/resources/data/Interns_2025_SWIFT_CODES.csv");
+        return saveAllBankEntitiesFromListToDatabase(listOfBankEntities);
+    }
 
-            String swiftCode = bankEntity.getSwiftCode();
+    public List<BankEntity> uploadDatabaseFromCsvFileLocalPath(String filePath){
+        return allBankEntitiesFromCsvToList(filePath);
+    }
 
-            bankEntity.setHeadquarter(calculateIsHeadquarter(swiftCode));
-
-            trimWhiteSpacesInAddress(bankEntity);
-
-            repository.save(bankEntity);
+    private List<BankEntity> allBankEntitiesFromCsvToList(String csvFilePath) {
+        try {
+            return new CsvToBeanBuilder<BankEntity>(new FileReader(csvFilePath))
+                    .withType(BankEntity.class)
+                    .build()
+                    .parse();
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("CSV file not found at: " + csvFilePath, e);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error processing CSV file.", e);
         }
     }
 
-    public void trimWhiteSpacesInAddress(BankEntity bankEntity){
+
+    public List<BankEntity> saveAllBankEntitiesFromListToDatabase(List<BankEntity> bankEntities){
+
+        return bankEntities.stream()
+                .peek(bankEntity -> {
+                    String swiftCode = bankEntity.getSwiftCode();
+                    trimWhiteSpaces(bankEntity);
+                    bankEntity.setHeadquarter(calculateIsHeadquarter(swiftCode));
+                })
+                .map(repository::save)
+                .collect(Collectors.toList());
+    }
+
+    private void trimWhiteSpaces(BankEntity bankEntity){
 
         bankEntity.setAddress(bankEntity.getAddress().trim());
-
     }
 
     public boolean calculateIsHeadquarter(String swiftCode) {
@@ -53,20 +78,23 @@ public class DataService {
         return repository
                 .findAll()
                 .stream()
-                .filter(bankEntity -> bankEntity.getSwiftCode().substring(0, 8).contains(mainSwiftCodeOfHQ) && !calculateIsHeadquarter(bankEntity.getSwiftCode()))
+                .filter(bankEntity -> bankEntity.getSwiftCode().substring(0, 8).contains(mainSwiftCodeOfHQ)
+                        && !calculateIsHeadquarter(bankEntity.getSwiftCode()))
                 .collect(Collectors.toList());
 
     }
 
     public List<BankEntity> findAllBranchesByCountryISO2(String countryIso2){
 
-        return repository.findAll()
+        return repository
+                .findAll()
                 .stream()
                 .filter(bankEntity -> bankEntity.getCountryISO2().contains(countryIso2))
                 .collect(Collectors.toList());
     }
 
     public String countryIso2ToName (String countryIso2){
+
         for (BankEntity bank : repository.findAll()){
             if(bank.getCountryISO2().contains(countryIso2)){
                 return bank.getCountryName();

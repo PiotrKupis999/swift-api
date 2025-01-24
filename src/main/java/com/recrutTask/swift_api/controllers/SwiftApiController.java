@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/swift-codes")
@@ -28,20 +29,14 @@ public class SwiftApiController {
     @Autowired
     private SwiftCodeRepository repository;
 
-    @GetMapping("/import-csv")
-    public ResponseEntity<List<BankEntity>> importCsv(@RequestParam String pathFile) {
-        try {
-            List<BankEntity> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
-                    .withType(BankEntity.class)
-                    .build()
-                    .parse();
+    @PostMapping("/import-database")
+    @ResponseBody
+    public List<BankEntity> importCsv() { return dataService.uploadDatabaseFromLocalFile(); }
 
-            dataService.readAllBeansToDatabase(csvData);
-
-            return ResponseEntity.ok(csvData);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+    @PostMapping("/import-csv-from")
+    @ResponseBody
+    public List<BankEntity> importCsvFromPath(@RequestParam String pathFile) {
+        return dataService.uploadDatabaseFromCsvFileLocalPath(pathFile);
     }
 
     @GetMapping("/{swift-code}")

@@ -10,15 +10,12 @@ public class Headquarter extends BankEntity{
 
     private List<BankEntity> branches;
 
-    public Headquarter(){};
 
     public Headquarter(DataService dataService, BankEntity bankEntity) {
-        super(bankEntity.getAddress(), bankEntity.getBankName(), bankEntity.getCountryISO2(), bankEntity.getCountryName(), bankEntity.getHeadquarter(), bankEntity.getSwiftCode());
+        super( bankEntity.getSwiftCode(), bankEntity.getAddress(), bankEntity.getBankName(), bankEntity.getCountryISO2(), bankEntity.getCountryName(), bankEntity.isHeadquarter());
         this.dataService = dataService;
         this.branches = dataService.findAllBranches(bankEntity.getSwiftCode());
     }
-
-
 
 
     public List<BankEntity> getBranches() {
