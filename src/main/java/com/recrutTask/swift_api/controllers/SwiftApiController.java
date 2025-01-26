@@ -1,92 +1,67 @@
 package com.recrutTask.swift_api.controllers;
 
-
-import com.opencsv.bean.CsvToBeanBuilder;
 import com.recrutTask.swift_api.models.BankEntity;
 import com.recrutTask.swift_api.models.Country;
-import com.recrutTask.swift_api.models.Headquarter;
-import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
 import com.recrutTask.swift_api.services.DataService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.FileReader;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/v1/swift-codes")
 public class SwiftApiController {
-
-
-
     @Autowired
     private DataService dataService;
-    @Autowired
-    private SwiftCodeRepository repository;
 
-    @GetMapping("/import-csv")
-    public ResponseEntity<List<BankEntity>> importCsv(@RequestParam String pathFile) {
-        try {
-            List<BankEntity> csvData = new CsvToBeanBuilder(new FileReader(pathFile))
-                    .withType(BankEntity.class)
-                    .build()
-                    .parse();
+    @PostMapping("/import-database")
+    @ResponseBody
+    public List<BankEntity> importCsv() { return dataService.uploadDatabaseFromLocalFile(); }
 
-            dataService.readAllBeansToDatabase(csvData);
-
-            return ResponseEntity.ok(csvData);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+    @PostMapping("/import-csv-from")
+    @ResponseBody
+    public List<BankEntity> importCsvFromPath(@RequestParam String pathFile) {
+        return dataService.uploadDatabaseFromCsvFileLocalPath(pathFile);
     }
 
     @GetMapping("/{swift-code}")
-    public ResponseEntity<BankEntity> getDetails(@PathVariable("swift-code") String swiftCode) {
-        swiftCode = swiftCode.toUpperCase();
+    @ResponseBody
+    public ResponseEntity<BankEntity> getDetails1(@PathVariable("swift-code") String swiftCode) {
         try {
-            BankEntity be1 = repository.findById(swiftCode).orElseThrow(() -> new RuntimeException("BankEntity not found"));
-
-            if (dataService.calculateIsHeadquarter(swiftCode)) {
-                Headquarter h1 = new Headquarter(dataService, be1);
-                return ResponseEntity.ok(h1);
-            }
-
-            return ResponseEntity.ok(be1);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
+            BankEntity found = dataService.getBankEntityBySwiftCode(swiftCode.toUpperCase());
+            return ResponseEntity.ok(found);
+        }catch (NoSuchElementException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No bank found with this SWIFT code", exception);
         }
     }
 
-
-
+    @SneakyThrows
     @GetMapping("/country/{countyISO2code}")
+    @ResponseBody
     public ResponseEntity<Country> getBankEntitiesByCountryISO2code(@PathVariable("countyISO2code") String countyISO2code) {
-        countyISO2code = countyISO2code.toUpperCase();
-        try {
-            Country country = new Country(countyISO2code, dataService);
-
-            return ResponseEntity.ok(country);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+        Country foundCountry = dataService.findAllSwiftCodesWithDetailsByCountryISO2(countyISO2code.toUpperCase());
+        return ResponseEntity.ok(foundCountry);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> addSwiftCode(@RequestBody BankEntity bankEntity) {
-        try {
-            repository.save(bankEntity);
-
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body((Map.of("message", "SWIFT code added successfully")));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+    @ResponseBody
+    public Map<String, String> addSwiftCode(@RequestBody BankEntity bankEntity) {
+        return dataService.addBankEntityToDatabase(bankEntity);
     }
 
+    @DeleteMapping("/{swift-code}")
+    @ResponseBody
+    public Map<String, String> deleteSwiftCode(@PathVariable("swift-code") String swiftCode,
+                                               @RequestParam("bankName") String bankName,
+                                               @RequestParam("countryISO2") String countryISO2) {
+        try {
+            return dataService.deleteBankEntityFromDatabase(swiftCode,bankName,countryISO2);
+        }catch (Exception exception){
+            return Map.of("message", exception.getMessage());
+        }
+    }
 }
