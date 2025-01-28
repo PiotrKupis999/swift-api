@@ -24,7 +24,7 @@ public class SwiftCodeRepositoryTest {
                 .bankName("Royal Bank")
                 .countryISO2("pl")
                 .countryName("poland")
-                .isHeadquarter(false)
+                //.isHeadquarter(false)
                 .swiftCode("12345678ABC")
                 .branches(null)
                 .build();
@@ -34,5 +34,7 @@ public class SwiftCodeRepositoryTest {
 
         Assertions.assertNotNull(savedSwiftCode);
         Assertions.assertNotNull(savedSwiftCode.getSwiftCode());
+        Assertions.assertFalse(savedSwiftCode.isHeadquarter());
+
     }
 }
