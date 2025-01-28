@@ -67,8 +67,8 @@ public class DataService {
         try {
             uppercaseSwiftAndCountryCodeAndCountryNameOfBankEntity(bankEntity);
             String swiftCode = bankEntity.getSwiftCode();
-            if (swiftCode.length() != 8 && swiftCode.length() != 11 || !swiftCode.matches("[A-Z0-9]+")) {
-                throw new InvalidDataException("Invalid SWIFT code: must be 8 or 11 alphanumeric characters.");
+            if (swiftCode.length() != 11 || !swiftCode.matches("[A-Z0-9]+")) {
+                throw new InvalidDataException("Invalid SWIFT code: must be 11 alphanumeric characters.");
             }
             if (bankEntity.isHeadquarter() ^ calculateIsHeadquarter(bankEntity.getSwiftCode())) {
                 throw new InvalidDataException("isHeadquarter input field is " + bankEntity.isHeadquarter()
@@ -147,7 +147,7 @@ public class DataService {
     }
 
     private List<BankEntity> findBankEntitiesByCountryISO2(String countryISO2) {
-        return repository.findByCountryISO2(countryISO2);
+        return repository.findAllBanksByCountryISO2(countryISO2);
     }
 
     private String countryIso2ToName(String countryIso2) {

@@ -50,7 +50,7 @@ public class SwiftApiController {
     public ResponseEntity<Map<String, String>> deleteSwiftCode(@PathVariable("swift-code") String swiftCode,
                                                @RequestParam("bankName") String bankName,
                                                @RequestParam("countryISO2") String countryISO2) {
-        Map<String, String> response = dataService.deleteBankEntityFromDatabase(swiftCode, bankName, countryISO2);
+        Map<String, String> response = dataService.deleteBankEntityFromDatabase(swiftCode.toUpperCase(), bankName, countryISO2.toUpperCase());
         return ResponseEntity.ok(response);
     }
 }
