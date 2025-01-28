@@ -66,10 +66,18 @@ public class DataService {
     public ResponseEntity<Map<String,String>> addBankEntityToDatabase(BankEntity bankEntity){
         try {
             uppercaseSwiftAndCountryCodeAndCountryNameOfBankEntity(bankEntity);
+            String swiftCode = bankEntity.getSwiftCode();
+            if (swiftCode.length() != 8 && swiftCode.length() != 11 || !swiftCode.matches("[A-Z0-9]+")) {
+                throw new InvalidDataException("Invalid SWIFT code: must be 8 or 11 alphanumeric characters.");
+            }
+            if (bankEntity.isHeadquarter() ^ calculateIsHeadquarter(bankEntity.getSwiftCode())) {
+                throw new InvalidDataException("isHeadquarter input field is " + bankEntity.isHeadquarter()
+                        + " while SWIFT code indicates it is " + calculateIsHeadquarter(bankEntity.getSwiftCode()));
+            }
             repository.save(bankEntity);
             return ResponseEntity.ok(Map.of("message", "SWIFT Code added successfully"));
         }catch (Exception e){
-            throw new InvalidDataException("Invalid format of input data!");
+            throw new InvalidDataException(e.getMessage());
         }
     }
 
