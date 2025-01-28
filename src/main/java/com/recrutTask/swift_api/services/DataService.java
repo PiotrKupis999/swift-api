@@ -147,7 +147,7 @@ public class DataService {
     }
 
     private List<BankEntity> findBankEntitiesByCountryISO2(String countryISO2) {
-        return repository.findByCountryISO2(countryISO2);
+        return repository.findAllBanksByCountryISO2(countryISO2);
     }
 
     private String countryIso2ToName(String countryIso2) {
