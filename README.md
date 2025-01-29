@@ -1,11 +1,12 @@
 # 🚀 Swift API – RESTful Backend in Spring Boot  
 
 ## 📒 Table of Contents
-* [General info](#general-info)
-* [Features](#features)
-* [Technologies](#technologies)
-* [Setup](#setup)
-* [API Endpoints](#api-endpoints)
+* [General info](#-general-info)
+* [Features](#-features)
+* [Technologies](#-technologies)
+* [Setup](#🧰setup)
+* [Running Tests](#-running-tests)
+* [API Endpoints](#-api-endpoints)
 
 <br>
 
