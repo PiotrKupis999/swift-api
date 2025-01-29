@@ -20,13 +20,13 @@ public class DataService {
     @Autowired
     SwiftCodeRepository repository;
 
-    public List<BankEntity> uploadDatabaseFromLocalFile(){
+    public List<BankEntity> uploadDatabaseFromLocalFile() {
         List<BankEntity> listOfBankEntities = allBankEntitiesFromCsvToList
                 ("src/main/resources/data/Interns_2025_SWIFT_CODES.csv");
         return saveAllBankEntitiesFromListToDatabase(listOfBankEntities);
     }
 
-    public List<BankEntity> uploadDatabaseFromCsvFileLocalPath(String filePath){
+    public List<BankEntity> uploadDatabaseFromCsvFileLocalPath(String filePath) {
         List<BankEntity> listOfBankEntities = allBankEntitiesFromCsvToList(filePath);
         return saveAllBankEntitiesFromListToDatabase(listOfBankEntities);
     }
@@ -63,7 +63,7 @@ public class DataService {
                 .build();
     }
 
-    public ResponseEntity<Map<String,String>> addBankEntityToDatabase(BankEntity bankEntity){
+    public ResponseEntity<Map<String,String>> addBankEntityToDatabase(BankEntity bankEntity) {
         try {
             uppercaseSwiftAndCountryCodeAndCountryNameOfBankEntity(bankEntity);
             String swiftCode = bankEntity.getSwiftCode();
@@ -76,12 +76,12 @@ public class DataService {
             }
             repository.save(bankEntity);
             return ResponseEntity.ok(Map.of("message", "SWIFT Code added successfully"));
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new InvalidDataException(e.getMessage());
         }
     }
 
-    public Map<String,String> deleteBankEntityFromDatabase(String swiftCode, String bankName, String countryISO2){
+    public Map<String,String> deleteBankEntityFromDatabase(String swiftCode, String bankName, String countryISO2) {
         BankEntity foundBank = getBankEntityBySwiftCode(swiftCode);
         if (foundBank.getBankName().equals(bankName) && foundBank.getCountryISO2().equals(countryISO2)) {
             repository.delete(foundBank);
@@ -110,7 +110,7 @@ public class DataService {
         }
     }
 
-    private List<BankEntity> saveAllBankEntitiesFromListToDatabase(List<BankEntity> bankEntities){
+    private List<BankEntity> saveAllBankEntitiesFromListToDatabase(List<BankEntity> bankEntities) {
         return bankEntities.stream()
                 .peek(bankEntity -> {
                     String swiftCode = bankEntity.getSwiftCode();
@@ -122,7 +122,7 @@ public class DataService {
                 .collect(Collectors.toList());
     }
 
-    private void trimWhiteSpaces(BankEntity bankEntity){
+    private void trimWhiteSpaces(BankEntity bankEntity) {
         if (bankEntity.getAddress() != null) {
             bankEntity.setAddress(bankEntity.getAddress().trim());
         }
@@ -136,7 +136,7 @@ public class DataService {
         return false;
     }
 
-    private List<BankEntity> findAllBranchesByHeadquarterSwiftCode (String swiftCode){
+    private List<BankEntity> findAllBranchesByHeadquarterSwiftCode (String swiftCode) {
         String mainSwiftCodeOfHQ = swiftCode.substring(0, 8);
         return repository
                 .findAll()

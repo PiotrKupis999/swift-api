@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country{
+public class Country {
     private String countryISO2;
     private String countryName;
     private List<BankEntity> swiftCodes;

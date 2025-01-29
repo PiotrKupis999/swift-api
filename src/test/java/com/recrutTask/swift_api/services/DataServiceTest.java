@@ -174,7 +174,4 @@ public class DataServiceTest {
             Assertions.assertEquals("No bank found with SWIFT code: 11111111XXX", e.getMessage());
         }
     }
-
-
-
 }
