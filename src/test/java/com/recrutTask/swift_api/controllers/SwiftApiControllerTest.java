@@ -3,7 +3,7 @@ package com.recrutTask.swift_api.controllers;
 import com.recrutTask.swift_api.models.BankEntity;
 import com.recrutTask.swift_api.models.Country;
 import com.recrutTask.swift_api.repositories.SwiftCodeRepository;
-import com.recrutTask.swift_api.services.DataService;
+import com.recrutTask.swift_api.services.SwiftApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +32,7 @@ public class SwiftApiControllerTest {
     private SwiftCodeRepository swiftCodeRepository;
 
     @Mock
-    private DataService dataService;
+    private SwiftApiService swiftApiService;
 
     @InjectMocks
     private SwiftApiController swiftApiController;
@@ -82,25 +82,6 @@ public class SwiftApiControllerTest {
     }
 
     @Test
-    public void SwiftApiControllerTest_ImportCsvFromPath() throws Exception {
-
-        mockMvc.perform(post("/v1/swift-codes/import/import-csv-from")
-                        .param("pathFile", "P:/Pobrane1/codes.csv"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].swiftCode", is("AAISALTRXXX")))
-                .andExpect(jsonPath("$[1].swiftCode", is("ABIEBGS1XXX")));
-    }
-
-    @Test
-    public void SwiftApiControllerTest_ImportCsv() throws Exception {
-
-        mockMvc.perform(get("/v1/swift-codes/import/import-database"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].swiftCode", is("AAISALTRXXX")))
-                .andExpect(jsonPath("$[1].swiftCode", is("ABIEBGS1XXX")));
-    }
-
-    @Test
     public void SwiftApiControllerTest_GetBankEntitiesByCountryISO2Code() throws Exception {
         String countryISO2 = "GE";
 
@@ -115,7 +96,7 @@ public class SwiftApiControllerTest {
 
         Country country = new Country(countryISO2, "GERMANY", List.of(bankEntity));
 
-        when(dataService.findAllSwiftCodesWithDetailsByCountryISO2(countryISO2))
+        when(swiftApiService.findAllSwiftCodesWithDetailsByCountryISO2(countryISO2))
                 .thenReturn(country);
 
         mockMvc.perform(get("/v1/swift-codes/country/{countyISO2code}", countryISO2))
