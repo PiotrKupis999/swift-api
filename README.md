@@ -4,9 +4,11 @@
 * [General info](#-general-info)
 * [Features](#-features)
 * [Technologies](#-technologies)
-* [Setup](#🧰setup)
+* [Setup](#-setup)
 * [Running Tests](#-running-tests)
 * [API Endpoints](#-api-endpoints)
+* [Frontend](#-frontend)
+
 
 <br>
 
@@ -20,6 +22,10 @@ The application parses SWIFT codes from a provided file, stores them in a databa
 
 
 ## ✨ Features  
+
+### Backend  
+
+
 - ✅ **SWIFT Code Parsing**: The application parses SWIFT codes from a provided file and organizes them by headquarters and branches.
 
 - ✅ **Database Storage**: Data is stored in a fast, low-latency database (choose appropriate DB: relational/non-relational) for efficient retrieval.
@@ -30,16 +36,32 @@ The application parses SWIFT codes from a provided file, stores them in a databa
 
 - ✅ **Containerized Application**: The application and database are containerized for easy setup and deployment.
 
+### Frontend  
+- ✅ **Interactive Web UI** – Built with **React**, providing an easy way to manage SWIFT codes.
+  
+- ✅ **User-Friendly Forms** – Add or delete SWIFT codes via simple forms.
+  
+- ✅ **Search Functionality** – Find SWIFT codes and banks by code or country.
+  
+- ✅ **Live Error Handling** – Displays error messages (e.g., invalid SWIFT codes).  
+
 
 
 <br>
 
 ## 🛠 Technologies  
+### Backend  
 - **Programming Language**: Java  
 - **Framework**: Spring Boot  
 - **ORM**: Hibernate with JPA  
 - **Database**: H2 (in-memory, for testing purposes)  
 - **Testing**: JUnit, Mockito
+  
+### Frontend  
+- **React**  
+- **Axios** (for API requests)  
+- **Bootstrap** (for styling)  
+
   
 <br>
 
@@ -73,13 +95,21 @@ The database is now available at http://localhost:8080/h2-console
 | User Name:	    | user                   |
 | Password:	      |                        |
 
-### 5️⃣ Upload *the spreadsheet* ***(optional)***
+### 5️⃣ Run the Frontend
 
-http://localhost:8080/v1/swift-codes/import/import-database
+Navigate to the swift-api/swift-api-frontend directory:
+```sh
+cd swift-api-frontend
+npm install
+npm start
+```
+Now the web application is available at http://localhost:3000.
+![image](https://github.com/user-attachments/assets/9a507f37-b92a-4a94-872e-44ce02fef7d9)
 
 <br>
 
 ## 🧪 Running Tests
+Navigate to the swift-api directory, then:
 ```sh
 mvn test
 ```
@@ -95,11 +125,13 @@ mvn test
 | POST   | `/v1/swift-codes/`                          | Add new SWIFT code entries                               |
 | DELETE | `/v1/swift-codes/{swift-code}`              | Delete swift-code data                                   |
 
-### 🔹 Additional Endpoints  
-| Method | Endpoint                                 | Description                                              |
-|--------|------------------------------------------|----------------------------------------------------------|
-| GET    | `/v1/swift-codes/import/import-database` | Add all SWIFT codes from well-known /spreadsheet/        |
-| POST   | `/v1/swift-codes/import/import-csv-from` | Add all SWIFT codes from local CSV file (specified path) |
+<br>
 
+## 🍓 Frontend 
 
+The web UI consists of four main sections:
+### 1️⃣ Add SWIFT Code – Form to enter a new SWIFT code, including bank name, country, and headquarters status.
+### 2️⃣ Delete SWIFT Code – Remove a SWIFT code by providing the bank name and country code.
+### 3️⃣ Find SWIFT Code – Search for a bank by its SWIFT code and retrieve details.
+### 4️⃣ Find Banks by Country – Search for all banks within a specific country.
 
