@@ -1,4 +1,4 @@
-# 🚀 Swift API – RESTful Backend in Spring Boot  
+# 🚀 SWIFT Code API – Full Stack Application (Spring Boot & React)
 
 ## 📒 Table of Contents
 * [General info](#-general-info)
