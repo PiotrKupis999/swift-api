@@ -32,7 +32,7 @@ const GetSwiftCode = () => {
                 <button type="submit">Search</button>
             </form>
             
-            {message && <p style={{ color: 'red' }}>{message}</p>}
+            {message && <p>{message}</p>}
 
             {bankDetails && (
                 <div>

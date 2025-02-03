@@ -37,7 +37,7 @@ const AddSwiftCode = () => {
                 <input type="text" placeholder="Country Name" onChange={(e) => setCountryName(e.target.value)} value={countryName} /><br />
                 <input type="text" placeholder="Address" onChange={(e) => setAddress(e.target.value)} value={address} /><br />
                 <label>
-                    Is it a headquarter?
+                    Is it a headquarters?
                     <input type="checkbox" onChange={(e) => setIsHeadquarter(e.target.checked)} checked={isHeadquarter} />
                 </label>
                 <br />

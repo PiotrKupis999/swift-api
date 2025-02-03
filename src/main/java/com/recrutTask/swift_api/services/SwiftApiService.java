@@ -21,17 +21,17 @@ public class SwiftApiService {
     SwiftCodeRepository repository;
 
     public BankEntity getBankEntityBySwiftCode(String swiftCode) {
-        BankEntity foundBank = repository.findById(ifEightDigitSwiftToHeadquarterSwift(swiftCode))
+        BankEntity foundBank = repository.findById(ifEightDigitSwiftToHeadquartersSwift(swiftCode))
                 .orElseThrow(() -> new BankNotFoundException("No bank found with SWIFT code: " + swiftCode));
-        boolean isHeadquarterValue = isBranchAHeadquarter(foundBank.getSwiftCode());
+        boolean isHeadquartersValue = isBranchAHeadquarters(foundBank.getSwiftCode());
         return BankEntity.builder()
                 .address(foundBank.getAddress())
                 .bankName(foundBank.getBankName())
                 .countryISO2(foundBank.getCountryISO2())
                 .countryName(foundBank.getCountryName())
-                .isHeadquarter(isHeadquarterValue)
+                .isHeadquarter(isHeadquartersValue)
                 .swiftCode(foundBank.getSwiftCode())
-                .branches(isHeadquarterValue ? findAllBranchesByHeadquarterSwiftCode(swiftCode) : null)
+                .branches(isHeadquartersValue ? findAllBranchesByHeadquartersSwiftCode(swiftCode) : null)
                 .build();
     }
 
@@ -56,15 +56,15 @@ public class SwiftApiService {
             }
             if (swiftCode.length() == 8) {
                 if (bankEntity.isHeadquarter()) {
-                    bankEntity.setSwiftCode(ifEightDigitSwiftToHeadquarterSwift(swiftCode));
+                    bankEntity.setSwiftCode(ifEightDigitSwiftToHeadquartersSwift(swiftCode));
                 }
                 else {
                     throw new InvalidDataException("Invalid branch's SWIFT code: must be 11 alphanumeric characters.");
                 }
             }
-            if (bankEntity.isHeadquarter() ^ isBranchAHeadquarter(bankEntity.getSwiftCode())) {
+            if (bankEntity.isHeadquarter() ^ isBranchAHeadquarters(bankEntity.getSwiftCode())) {
                 throw new InvalidDataException("isHeadquarter input field is " + bankEntity.isHeadquarter()
-                        + " while SWIFT code indicates it is " + isBranchAHeadquarter(bankEntity.getSwiftCode()));
+                        + " while SWIFT code indicates it is " + isBranchAHeadquarters(bankEntity.getSwiftCode()));
             }
             repository.save(bankEntity);
             return ResponseEntity.ok(Map.of("message", "SWIFT Code added successfully"));
@@ -83,8 +83,8 @@ public class SwiftApiService {
         }
     }
 
-    // If the provided SWIFT code is 8 characters (main SWIFT code), append "XXX" to return the headquarter SWIFT code.
-    private String ifEightDigitSwiftToHeadquarterSwift(String swiftCode) {
+    // If the provided SWIFT code is 8 characters (main SWIFT code), append "XXX" to return the headquarters SWIFT code.
+    private String ifEightDigitSwiftToHeadquartersSwift(String swiftCode) {
         if(swiftCode.length() == 8) {
             swiftCode += "XXX";
         }
@@ -120,7 +120,7 @@ public class SwiftApiService {
     private void prepareBankEntityBeforeSave(BankEntity bankEntity) {
         uppercaseSwiftISO2CountryOfBankEntity(bankEntity);
         trimWhiteSpaces(bankEntity);
-        bankEntity.setHeadquarter(isBranchAHeadquarter(bankEntity.getSwiftCode()));
+        bankEntity.setHeadquarter(isBranchAHeadquarters(bankEntity.getSwiftCode()));
     }
 
     private void trimWhiteSpaces(BankEntity bankEntity) {
@@ -129,7 +129,7 @@ public class SwiftApiService {
         }
     }
 
-    private boolean isBranchAHeadquarter(String swiftCode) {
+    private boolean isBranchAHeadquarters(String swiftCode) {
         if (swiftCode != null && swiftCode.length() >= 3) {
             String suffix = swiftCode.substring(swiftCode.length() - 3);
             return "XXX".equals(suffix);
@@ -137,12 +137,12 @@ public class SwiftApiService {
         return false;
     }
 
-    private List<BankEntity> findAllBranchesByHeadquarterSwiftCode (String swiftCode) {
+    private List<BankEntity> findAllBranchesByHeadquartersSwiftCode(String swiftCode) {
         String mainSwiftCodeOfHQ = swiftCode.substring(0, 8);
         return repository
                 .findAll()
                 .stream()
-                .filter(bank -> bank.getSwiftCode().startsWith(mainSwiftCodeOfHQ) && !isBranchAHeadquarter(bank.getSwiftCode()))
+                .filter(bank -> bank.getSwiftCode().startsWith(mainSwiftCodeOfHQ) && !isBranchAHeadquarters(bank.getSwiftCode()))
                 .collect(Collectors.toList());
     }
 
